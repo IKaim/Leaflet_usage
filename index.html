@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+	<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="leaflet/leaflet.css"/>
+	<link rel="stylesheet" href="Leaflet.SidePanel-main/dist/leaflet-sidepanel.css">
+		<style>
+			html, body, #map{
+				width: 100%;
+				height: 100%;
+				padding: 0;
+				margin: 0;	
+			}
+			.sidepanel-content {
+			font-size: 1rem;
+		}
+
+		.sidepanel-content h4 {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+
+		.sidepanel-content a {
+			text-decoration: none;
+			font-size: 1rem;
+			color: #199900;
+			transition: color 0.3s ease-in;
+		}
+
+		.sidepanel-content a:hover {
+			color: #116600;
+			text-decoration: underline;
+		}
+		
+		
+		</style>
+
+		<title> Geoportal </title>
+
+		<meta charset="UTF-8">
+		
+
+	</head>
+
+	<body>
+
+<div id="map">
+		<!-- Side Panel right -->
+		<div id="mySidepanelRight" class="sidepanel" aria-label="side panel" aria-hidden="false">
+			<div class="sidepanel-inner-wrapper">
+				<nav class="sidepanel-tabs-wrapper" aria-label="sidepanel tab navigation">
+					<ul class="sidepanel-tabs">
+						<li class="sidepanel-tab">
+							<a href="#" class="sidebar-tab-link" role="tab" data-tab-link="tab-1">
+								About
+							</a>
+						</li>
+						<li class="sidepanel-tab">
+							<a href="#" class="sidebar-tab-link" role="tab" data-tab-link="tab-2">
+								Creator
+							</a>
+						</li>
+					</ul>
+				</nav>
+				<div class="sidepanel-content-wrapper">
+					<div class="sidepanel-content">
+						<div class="sidepanel-tab-content" data-tab-content="tab-1">
+						<h4>Kopalne źródła węglowodorowe w Ameryce Północnej </h4>
+							<p>
+							To miejsca, gdzie z dna morskiego wypływają wody porowe 
+							bogate w siarkowodór i metan (źródła węglowodorowe, ang. hydrocarbon seeps). 
+							Wody te charakteryzują się zwykle niską temperaturą i pojawiają w różnych sytuacjach, 
+							ale najczęściej w strefach subdukcji, u podnóża stoków kontynentalnych, wzdłuż uskoków, 
+							nad złożami ropy naftowej lub soli, oraz w strefach występowania hydratu metanu (zamarznięta 
+							woda z dużą zawartością metanu). Znane są liczne przykłady kopalnych utworów źródeł węglowodorowych. 
+							Klasycznym regionem ich występowania jest zachodnia część Ameryki Północnej (Kalifornia, Oregon, Waszyngton), 
+							a także rejon Black Hills (Południowa Dakota, Wyoming, Nebraska).
+							<br>
+							<br>
+							Dla zainteresowanych: <a href="Kaim-2009-RocznikME.pdf" target="_blank"> PDF </a>
+							</p>
+						</div>
+						<div class="sidepanel-tab-content" data-tab-content="tab-2">
+							<p>Data provided by Krzysztof Hryniewicz 
+							<a href="https://www.researchgate.net/profile/Krzysztof-Hryniewicz" target="_blank"> ResearchGate </a>
+							<br>
+							Geoportal created by Izabella Kaim</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="sidepanel-toggle-container">
+				<button class="sidepanel-toggle-button" type="button" aria-label="toggle side panel"></button>
+			</div>
+		</div>
+	</div>
+	</div>
+
+
+
+		
+		<link rel="stylesheet" href="leaflet/leaflet.css">
+		<script src="leaflet/leaflet.js"> </script>
+		<script src="seepy.js"> </script>
+		<link rel="stylesheet" href="leaflet-search-master/dist/leaflet-search.src.css">
+		<script src="leaflet-search-master/dist/leaflet-search.src.js"> </script>
+
+				<link rel="stylesheet" href="Leaflet.SidePanel-main/dist/leaflet-sidepanel.css">
+		<script src="Leaflet.SidePanel-main/dist/leaflet-sidepanel.min.js"> </script>
+		
+		<script>		
+				
+		//OpenStreetMap layer
+		var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', 
+					{foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">&copy;OpenStreetMap</a> contributors'});
+		
+		//osm.addTo(mymap);
+		
+		//Thunderforest landscape layer
+		var landscape = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=828126b42f864fbaac996bfc0276ae55',
+					{foo: 'bar', attribution: '<a href="https://www.thunderforest.com">&copy; MapsThunderforest</a>'});
+					
+		//landscape.addTo(mymap)
+		
+		var orto = L.tileLayer('https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=oDAuktblFyxLjvuFK6EM',
+					{ attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a>'});
+		
+		var wmsLayer = L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+					layers: 'SRTM30-Colored-Hillshade'});
+					
+		var wmsLayer2 = L.tileLayer.wms('http://ows.mundialis.de/services/service?', {
+				layers: 'OSM-WMS'});
+		
+		var mymap = L.map('map', {
+			center: [39.73, -98.99],
+			zoom: 5,
+			layers: [osm, landscape, orto, wmsLayer2, wmsLayer]
+			});
+		
+		var baseMaps = {
+		"OSM-WMS": wmsLayer2,
+		"SRTM30-Colored-Hillshade": wmsLayer,
+		"Orto": orto,
+		"Landscape": landscape,
+		"OpenStreetMap": osm
+		};
+		
+		var layerControl = L.control.layers(baseMaps).addTo(mymap);
+		
+		
+		var shellIcon = L.icon({
+			iconUrl: 'shell.png',
+			
+			iconSize:     [30, 36], // size of the icon
+			
+			popupAnchor:  [0, -20] // point from which the popup should open relative to the iconAnchor
+			});
+		
+		//punkty z pliku seepy.js
+		var punktyGJ = L.geoJSON(punkty, {onEachFeature: yourOnEachFeatureFunction,
+							  pointToLayer: ikonka}).addTo(mymap);
+		
+		
+
+		function yourOnEachFeatureFunction(feature, layer){
+		if (feature.properties.name) {
+			layer.bindPopup(feature.properties.name);}
+		}
+		
+		function ikonka(feature, latlng){
+		 return L.marker(latlng,  {icon: shellIcon});
+		 }
+		
+		//skala
+		L.control.scale().addTo(mymap);
+		
+		//Control Search Copyright Stefano Cudini
+		const searchControl = new L.Control.Search({
+		layer: punktyGJ,
+		zoom: '15',
+		propertyName: 'name'
+		});
+		
+		mymap.addControl(searchControl);
+		
+		//sidepanel
+		const sidepanelRight = L.control.sidepanel('mySidepanelRight', {
+			panelPosition: 'right',
+			tabsPosition: 'top',
+			pushControls: true,
+			darkMode: true,
+			startTab: 'tab-1'
+		}).addTo(mymap);
+		
+		</script>
+	
+	</body>
+</html>
